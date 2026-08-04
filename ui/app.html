@@ -1,86 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celebrity Classifier</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .result-area {
-            margin-top: 20px;
-            display: none;
-        }
-    </style>
+
+    <title>CelebLens AI</title>
+
+    <link rel="stylesheet" href="app.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
+
 <body>
-    <div class="container text-center">
-        <h1 class="mb-4 text-primary">Celebrity Image Classifier</h1>
-        <p class="text-secondary">Upload an image, and we'll tell you the celebrity name along with the prediction confidence.</p>
 
-        <div class="mb-3">
-            <input type="file" id="fileInput" accept="image/*" class="form-control" style="max-width: 400px; margin: 0 auto;">
-        </div>
-        <button class="btn btn-primary" onclick="uploadImage()">Upload and Classify</button>
+<div class="aurora"></div>
+<nav class="navbar">
 
-        <div id="result" class="result-area alert alert-info mt-4"></div>
+    <div class="brand">
+
+        <i class="fa-solid fa-brain"></i>
+
+        <span>CelebLens AI</span>
+
     </div>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <a href="https://github.com/Abbasbaniyan" target="_blank">
 
-    <script>
-        function uploadImage() {
-            const fileInput = document.getElementById('fileInput');
-            const resultArea = document.getElementById('result');
-            const reader = new FileReader();
+        <i class="fa-brands fa-github"></i>
 
-            resultArea.style.display = 'none'; // Hide result area initially
+        GitHub
 
-            reader.onload = function () {
-                const base64Image = reader.result;
+    </a>
 
-                fetch('http://127.0.0.1:5000/classify_image', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `image_data=${encodeURIComponent(base64Image)}`
-                })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then((data) => {
-                        const celebrityName = data[0].class;
-                        const maxProbability = data[0].class_probability.reduce((a, b) => Math.max(a, b), 0);
-                        
-                        resultArea.textContent = `Celebrity: ${celebrityName}, Confidence: ${maxProbability}%`;
-                        resultArea.style.display = 'block';
-                        resultArea.className = 'result-area alert alert-success';
-                    })
-                    .catch((error) => {
-                        resultArea.textContent = `Error: ${error.message}`;
-                        resultArea.style.display = 'block';
-                        resultArea.className = 'result-area alert alert-danger';
-                    });
-            };
+</nav>
 
-            if (fileInput.files.length > 0) {
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                alert('Please select an image file to upload.');
-            }
-        }
-    </script>
+<div class="wrapper">
+
+<div class="hero">
+
+<div class="logo">
+
+<i class="fa-solid fa-sparkles"></i>
+
+<span>CelebLens AI</span>
+
+</div>
+
+<h1>
+
+Recognize Any Celebrity
+
+<span>Using Artificial Intelligence</span>
+
+</h1>
+
+<p>
+
+Upload an image and let the AI identify the celebrity within seconds.
+
+</p>
+
+</div>
+
+
+<div class="glass-card">
+
+<div class="upload-box" id="dropArea">
+
+<input type="file" id="fileInput" hidden accept="image/*">
+
+<i class="fa-solid fa-cloud-arrow-up"></i>
+
+<h3>Upload Celebrity Image</h3>
+
+<p>
+Drag & Drop your image here<br>
+or <strong>browse</strong> from your device
+</p>
+
+<span class="file-type">
+JPG • PNG • WEBP
+</span>
+
+</div>
+
+
+<div class="preview">
+
+<img id="previewImage">
+
+</div>
+
+
+<button id="predictBtn">
+
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+
+Analyze Image
+
+</button>
+
+
+<div class="loader" id="loader">
+
+<div class="spinner"></div>
+
+<p>AI is thinking...</p>
+
+</div>
+
+
+<div class="result-card" id="resultCard">
+
+<h2 id="celebName">
+
+Celebrity Name
+
+</h2>
+
+<div class="percent">
+
+<span id="confidence">
+
+95%
+
+</span>
+
+</div>
+
+<div class="progress">
+
+<div class="progress-bar" id="progressBar"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
 </body>
+
 </html>
