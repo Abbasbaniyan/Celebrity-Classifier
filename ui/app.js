@@ -69,6 +69,7 @@ function uploadImage(){
 
     loader.style.display="block";
 
+    document.querySelector(".prediction-container").style.display="none";
     resultCard.style.display="none";
 
     const reader = new FileReader();
@@ -119,6 +120,7 @@ function uploadImage(){
 
             progressBar.style.width=max+"%";
 
+            document.querySelector(".prediction-container").style.display="flex";
             resultCard.style.display="block";
 
         })
